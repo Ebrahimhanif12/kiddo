@@ -1,17 +1,17 @@
 # This is a config for E2B sandbox template.
-# You can use template ID (tp2jey8awvas2hj77xng) or template name (kiddo-test2) to create a sandbox:
+# You can use template ID (tp2jey8awvas2hj77xng) or template name (kiddo-nextjs-test4) to create a sandbox:
 
 # Python SDK
 # from e2b import Sandbox, AsyncSandbox
-# sandbox = Sandbox("kiddo-test2") # Sync sandbox
-# sandbox = await AsyncSandbox.create("kiddo-test2") # Async sandbox
+# sandbox = Sandbox("kiddo-nextjs-test4") # Sync sandbox
+# sandbox = await AsyncSandbox.create("kiddo-nextjs-test4") # Async sandbox
 
 # JS SDK
 # import { Sandbox } from 'e2b'
-# const sandbox = await Sandbox.create('kiddo-test2')
+# const sandbox = await Sandbox.create('kiddo-nextjs-test4')
 
 team_id = "803d07ad-37e2-42d2-8cc0-f08fbb6f20a0"
 start_cmd = "/compile_page.sh"
 dockerfile = "e2b.Dockerfile"
-template_name = "kiddo-test2"
+template_name = "kiddo-nextjs-test4"
 template_id = "tp2jey8awvas2hj77xng"
