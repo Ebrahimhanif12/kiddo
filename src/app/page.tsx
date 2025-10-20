@@ -1,6 +1,6 @@
 "use client"
 
-import {  useMutation } from "@tanstack/react-query";
+import {  useMutation, useQuery } from "@tanstack/react-query";
 import {  useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,9 +16,10 @@ export default   function Page() {
   const [value, setValue] = useState("")
 
   const trpc = useTRPC();
-  const invoke = useMutation(trpc.invoke.mutationOptions({
+  const {data: message} = useQuery(trpc.message.getMany.queryOptions());
+  const createMessage = useMutation(trpc.message.create.mutationOptions({
     onSuccess: () => {
-      toast.success("Background job started")
+      toast.success("Message created")
     }
   }))
  
@@ -27,7 +28,7 @@ export default   function Page() {
   return (
     <div>
       <Input value={value} onChange={(e) => setValue(e.target.value)}></Input>
-      <Button disabled = {invoke.isPending} onClick={() => invoke.mutate({value:value})}>Invoke</Button>
+      <Button disabled = {createMessage.isPending} onClick={() => createMessage.mutate({value:value})}>Invoke</Button>
     </div>
   );
 }
