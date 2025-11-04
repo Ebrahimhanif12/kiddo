@@ -1,3 +1,8 @@
+import { ProjectView } from "@/modules/projects/ui/views/project-views";
+import { getQueryClient, trpc } from "@/trpc/server";
+import {dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Suspense } from "react";
+
 interface Props {
     params: Promise<{ projectId: string }>;
 
@@ -6,12 +11,20 @@ interface Props {
 const Page = async ({ params }: Props) => {
     const { projectId } = await params;
 
+    const queryClient = getQueryClient();
+    void queryClient.prefetchQuery(trpc.message.getMany.queryOptions({
+         projectId ,
+        }));
+        void queryClient.prefetchQuery(trpc.project.getOne.queryOptions({
+         id: projectId ,
+        }));
+
     return (
-        <div className="h-screen w-screen flex items-center justify-center">
-            <div className="max-w-7xl mx-auto flex items-center flex-col gap-y-4 justify-center">
-                <h1 className="text-2xl font-bold">Project ID: {projectId}</h1>
-            </div>
-        </div>
+       <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<p>Loading project...</p>}>
+          <ProjectView projectId={projectId} />
+        </Suspense>
+       </HydrationBoundary>
     );
 
 }
