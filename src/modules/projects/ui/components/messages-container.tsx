@@ -28,7 +28,7 @@ export const MessagesContainer = ({
         refetchInterval:5000,
     }
 ))
-
+    //TODO: This is causing problems
     // useEffect(() => {
     //     const lastAssistantMessageWithFragment = messages.findLast(
     //         (message) => message.role === "ASSISTANT" && !!message.fragment,
