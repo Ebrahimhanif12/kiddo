@@ -36,7 +36,7 @@ export const MessageLoading = () => {
         <div className="flex flex-col group px-2 pb-4">
             <div className="flex items-center gap-2 pl-2 mb-2">
                 <Image 
-                src="/kiddoLogo.png"
+                src="/kiddoLogo2.png"
                 alt="kiddo"
                 width={18}
                 height={18}

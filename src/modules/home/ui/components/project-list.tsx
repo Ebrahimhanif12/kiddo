@@ -41,10 +41,10 @@ export const ProjectList = () => {
                         >
                         <div className="flex items-center gap-x-4">
                             <Image
-                            src="/kiddoLogo.png"
+                            src="/kiddoLogo2.png"
                             alt="kiddo"
-                            width={32}
-                            height={32}
+                            width={42}
+                            height={42}
                             className="object-container"
                             />
                             <div className="flex flex-col">

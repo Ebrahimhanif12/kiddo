@@ -89,10 +89,10 @@ const AssistantMessage = ({
             <div className="flex items-center gap-2 pl-2 mb-2">
                 {/*TODO: Add logo*/}
                 <Image
-                src="/kiddoLogo.png"
+                src="/kiddoLogo2.png"
                 alt="kiddo"
-                width={18}
-                height={18}
+                width={28}
+                height={28}
                 className="shrink-0"
                 ></Image>
                 <span className="text-sm font-medium">Kiddo</span>

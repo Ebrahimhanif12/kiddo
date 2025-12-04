@@ -31,10 +31,10 @@ export const ProjectHeader = ({projectId}:Props) => {
                     transition-opacity pl-2"
                     >
                         <Image
-                        src="/kiddoLogo.png"
+                        src="/kiddoLogo2.png"
                         alt="kiddo"
-                        width={18}
-                        height={18}
+                        width={28}
+                        height={28}
                         >
                         </Image>
                         <span className="text-sm font-medium">{project.name}</span>

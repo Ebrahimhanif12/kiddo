@@ -8,10 +8,10 @@ const Page = () => {
       <section className="space-y-6 py-[16vh] 2xl:py-48">
         <div className="flex flex-col items-center">
           <Image
-          src="/kiddoLogo.png"
+          src="/kiddoLogo2.png"
           alt="kiddo"
-          width={50}
-          height={50}
+          width={70}
+          height={70}
           className="hidden md:block"
           />
         </div>

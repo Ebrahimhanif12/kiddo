@@ -85,3 +85,22 @@ model Usage {
   expire DateTime?
 
 }
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+model Payment {
+  id        String        @id @default(uuid())
+  tranId    String        @unique
+  userId    String
+  amount    Int
+  currency  String        @default("BDT")
+  credits   Int
+  status    PaymentStatus @default(PENDING)
+  raw       Json?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
