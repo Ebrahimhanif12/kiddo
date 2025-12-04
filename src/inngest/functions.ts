@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { inngest } from "./client";
 import { Sandbox } from "@e2b/code-interpreter";
 import {
@@ -76,7 +77,7 @@ export const codeAgentFunction = inngest.createFunction(
       }
     );
     //Tools--------------
-
+    // @ts-ignore
     const terminalTool: Tool = createTool({
       name: "terminal",
       description: "Use the terminal to run commands",
@@ -108,7 +109,7 @@ export const codeAgentFunction = inngest.createFunction(
         });
       },
     });
-
+    // @ts-ignore
     const fileWriterTool: Tool = createTool({
       name: "createOrUpdateFile",
       description: "Create or update files in the sandbox",
@@ -142,6 +143,7 @@ export const codeAgentFunction = inngest.createFunction(
       },
     });
 
+    // @ts-ignore
     const readFileTool: Tool = createTool({
       name: "readFile",
       description: "Read files from the sandbox",
