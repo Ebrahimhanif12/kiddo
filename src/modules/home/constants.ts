@@ -12,11 +12,12 @@ export const PROJECT_TEMPLATES = [
       "Create an admin dashboard with a sidebar, stat cards, a chart placeholder, and a basic table with filter and pagination using local state. Use clear visual grouping and balance in your design for a modern, professional look.",
   },
   {
-    emoji: "📋",
-    title: "Build a portfolio",
+    emoji: "🎨",
+    title: "Build a developer portfolio",
     prompt:
-      "Build a kanban board with drag-and-drop using react-beautiful-dnd and support for adding and removing tasks with local state. Use consistent spacing, column widths, and hover effects for a polished UI.",
+      "Design and build a modern, responsive developer portfolio using React. Include sections for hero, about, skills, projects, and contact. Add smooth hover effects, consistent spacing, and polished UI animations. Ensure clean layout, accessibility, and mobile-first responsiveness.",
   },
+
   {
     emoji: "🗂️",
     title: "Build a file manager",
