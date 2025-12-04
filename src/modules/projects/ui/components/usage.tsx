@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { CrownIcon } from "lucide-react";
 import Link from "next/link";
+import {useMemo} from "react";
 
 interface Props {
     points: number;
@@ -9,6 +10,24 @@ interface Props {
 }
 
 export const Usage = ({ points, msBeforeNext }: Props) => {
+
+    const resetTime = useMemo(() => {
+        try{
+            return formatDuration(
+                intervalToDuration({
+                    start: new Date(),
+                    end: new Date(Date.now() + msBeforeNext),
+                }),
+                { format: ["months", "days","hours"]}
+            )
+
+        }
+        catch (error) {
+             console.error("Error formatting Duration", error);
+             return "unknown";
+
+        }
+    }, [msBeforeNext])
     return (
         <div className="rounded-t-xl bg-background border border-b-0 p-2.5">
             <div className="flex items-center gap-x-2">
@@ -17,14 +36,8 @@ export const Usage = ({ points, msBeforeNext }: Props) => {
                         {points} free credits remaining
                     </p>
                     <p className="text-xs text-muted-foreground">
-                        Reset in{" "}
-                        {formatDuration(
-                            intervalToDuration({
-                                start: new Date(),
-                                end: new Date(Date.now() + msBeforeNext),
-                            }),
-                            {format: ["months", "days", "hours"]}
-                        )}
+                        Reset in{" "} {resetTime}
+                       
                     </p>
                 </div>
                 <Button 

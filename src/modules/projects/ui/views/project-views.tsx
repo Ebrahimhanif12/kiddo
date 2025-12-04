@@ -21,6 +21,7 @@ import Link from "next/link";
 import { CodeView } from "@/components/code-view";
 import { FileExplorer } from "@/components/file-explorer";
 import { UserControl } from "@/components/user-control";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface Props {
     projectId: string;
@@ -43,19 +44,23 @@ export const ProjectView = ({ projectId }: Props) => {
                     defaultSize={35}
                     minSize={20}
                     className="flex flex-col min-h-0">
-                    <Suspense fallback={<p>Loading project...</p>}>
-                        <ProjectHeader projectId={projectId} />
-                    </Suspense>
+                    <ErrorBoundary fallback={<p>Project Header error</p>}>
+                        <Suspense fallback={<p>Loading project...</p>}>
+                            <ProjectHeader projectId={projectId} />
+                        </Suspense>
+                    </ErrorBoundary>
 
-                    <Suspense fallback={<p>Loading....</p>}>
-                        <MessagesContainer
-                            projectId={projectId}
-                            activeFragment={activeFragment}
-                            setActiveFragment={setActiveFragment}
+                    <ErrorBoundary fallback={<p>Message container error</p>}>
+                        <Suspense fallback={<p>Loading....</p>}>
+                            <MessagesContainer
+                                projectId={projectId}
+                                activeFragment={activeFragment}
+                                setActiveFragment={setActiveFragment}
 
 
-                        ></MessagesContainer>
-                    </Suspense>
+                            ></MessagesContainer>
+                        </Suspense>
+                    </ErrorBoundary>
 
 
                 </ResizablePanel>
@@ -75,20 +80,20 @@ export const ProjectView = ({ projectId }: Props) => {
                         <div className="w-full flex items-center p-2 border-b gap-x-2">
                             <TabsList className="h-8 p-0 border rounded-m">
                                 <TabsTrigger value="preview" className="rounded-md">
-                                    <EyeIcon/> <span>Demo</span>
+                                    <EyeIcon /> <span>Demo</span>
                                 </TabsTrigger>
 
-                                 <TabsTrigger value="code" className="rounded-md">
-                                    <CodeIcon/> <span>Code</span>
+                                <TabsTrigger value="code" className="rounded-md">
+                                    <CodeIcon /> <span>Code</span>
                                 </TabsTrigger>
                             </TabsList>
                             <div className="ml-auto flex items-center gap-x-2">
                                 <Button asChild size="sm" variant="default">
                                     <Link href="/pricing">
-                                    <CrownIcon/>Upgrade
+                                        <CrownIcon />Upgrade
                                     </Link>
                                 </Button>
-                                <UserControl/>
+                                <UserControl />
                             </div>
                         </div>
                         <TabsContent value="preview">
@@ -96,8 +101,8 @@ export const ProjectView = ({ projectId }: Props) => {
                         </TabsContent>
                         <TabsContent value="code" className="min-h-0">
                             {!!activeFragment?.files && (
-                                <FileExplorer 
-                                files={activeFragment.files as {[path: string]: string}}
+                                <FileExplorer
+                                    files={activeFragment.files as { [path: string]: string }}
                                 />
                             )}
                         </TabsContent>
