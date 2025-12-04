@@ -1,11 +1,10 @@
 import Image from "next/image";
-import{useState, useEffect} from "react";
+import{useState} from "react";
 
 const ShimmerMessage = () => {
     const message = [
         "Thinking...",
         "Loading...",
-        "Kiddo is doing her best...",
         "Analyzing Your Request...",
         "Building your Website...",
         "Crafting components...",
@@ -14,13 +13,13 @@ const ShimmerMessage = () => {
         "Almost Ready...",
     ]
 
-    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+    const [currentMessageIndex] = useState(0);
 
-    useEffect(() => {
-        const interval = setInterval(() =>{
-            setCurrentMessageIndex((prev) => (prev+1) % message.length);
-        },2000)
-    }, [message.length]);
+    // useEffect(() => {
+    //     const interval = setInterval(() =>{
+    //         setCurrentMessageIndex((prev) => (prev+1) % message.length);
+    //     },2000)
+    // }, [message.length]);
 
     return (
         <div className="flex items-center gap-2">

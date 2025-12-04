@@ -1,5 +1,5 @@
 
 import {NextResponse} from "next/server";
-export async function POST(req,res) {
+export async function POST(req) {
         return NextResponse.redirect(new URL('/success', req.url),303)
 }

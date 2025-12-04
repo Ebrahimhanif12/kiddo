@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import TextareaAutosize from "react-textarea-autosize"
 import { z } from "zod";
-import { Value } from "@radix-ui/react-select";
 import { Form, FormField } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -10,10 +9,9 @@ import { Button } from "@/components/ui/button";
 import OutOfCreditsModal from "@/components/OutOfCreditsModal";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Usage } from "./usage";
-import { useRouter } from "next/navigation";
 
 interface Props {
     projectId: string;
@@ -31,7 +29,6 @@ export const MessageForm = ({ projectId }: Props) => {
 
     const trpc = useTRPC();
     const queryClient = useQueryClient();
-    const router = useRouter();
 
     const { data: usage } = useQuery(trpc.usage.status.queryOptions());
 
