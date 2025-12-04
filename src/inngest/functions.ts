@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { inngest } from "./client";
 import { Sandbox } from "@e2b/code-interpreter";
 import {
