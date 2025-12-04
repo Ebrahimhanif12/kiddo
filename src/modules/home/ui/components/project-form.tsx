@@ -7,6 +7,7 @@ import { Form, FormField } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import OutOfCreditsModal from "@/components/OutOfCreditsModal";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 export const ProjectForm = () => {
     const router = useRouter();
+    const [showOutOfCredits, setShowOutOfCredits] = useState(false);
 
     const trpc = useTRPC();
     const clerk = useClerk();
@@ -48,15 +50,16 @@ export const ProjectForm = () => {
         },
         onError: (error) => {
             toast.error(error.message);
-            
-            if(error.data?.code === "UNAUTHORIZED") {
+
+            if (error.data?.code === "UNAUTHORIZED") {
                 clerk.openSignIn();
             }
 
             if (error.data?.code === "TOO_MANY_REQUESTS") {
-                router.push("/pricing");
+                setShowOutOfCredits(true);
+                return;
             }
-            
+
         }
 
     }))
@@ -153,6 +156,10 @@ export const ProjectForm = () => {
                     ))}
 
                 </div>
+                <OutOfCreditsModal
+                    open={showOutOfCredits}
+                    onClose={() => setShowOutOfCredits(false)}
+                />
             </section>
 
         </Form>

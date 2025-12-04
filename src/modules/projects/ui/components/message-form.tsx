@@ -7,6 +7,7 @@ import { Form, FormField } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import OutOfCreditsModal from "@/components/OutOfCreditsModal";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -25,12 +26,14 @@ const formSchema = z.object({
 })
 
 export const MessageForm = ({ projectId }: Props) => {
+    const [showOutOfCredits, setShowOutOfCredits] = useState(false);
+
 
     const trpc = useTRPC();
     const queryClient = useQueryClient();
-    const router =  useRouter();
+    const router = useRouter();
 
-    const {data: usage} = useQuery(trpc.usage.status.queryOptions());
+    const { data: usage } = useQuery(trpc.usage.status.queryOptions());
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -40,21 +43,23 @@ export const MessageForm = ({ projectId }: Props) => {
     })
 
     const createMessage = useMutation(trpc.message.create.mutationOptions({
-        onSuccess: () =>{
+        onSuccess: () => {
             form.reset();
             queryClient.invalidateQueries(
-                trpc.message.getMany.queryOptions({projectId}),
+                trpc.message.getMany.queryOptions({ projectId }),
             );
             queryClient.invalidateQueries(
                 trpc.usage.status.queryOptions()
             );
         },
-        onError:(error) => {
+        onError: (error) => {
             toast.error(error.message);
 
-            if(error.data?.code === "TOO_MANY_REQUESTS") {
-                router.push("/pricing")
+            if (error.data?.code === "TOO_MANY_REQUESTS") {
+                setShowOutOfCredits(true);
+                return;
             }
+
         }
 
     }))
@@ -73,9 +78,9 @@ export const MessageForm = ({ projectId }: Props) => {
     return (
         <Form {...form} >
             {showUsage && (
-                <Usage 
-                points={usage.remainingPoints}
-                msBeforeNext={usage.msBeforeNext}
+                <Usage
+                    points={usage.remainingPoints}
+                    msBeforeNext={usage.msBeforeNext}
                 />
             )}
             <form onSubmit={form.handleSubmit(onSubmit)}
@@ -100,10 +105,10 @@ export const MessageForm = ({ projectId }: Props) => {
                             maxRows={8}
                             className="pt-4 resize-none border-none w-full outline-none bg-transparent"
                             placeholder="What would you like to build?"
-                            onKeyDown={(e)=>{
-                                if(e.key==="Enter" && (e.ctrlKey || e.metaKey)){
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                                     e.preventDefault();
-                                    form.handleSubmit(onSubmit) (e);
+                                    form.handleSubmit(onSubmit)(e);
                                 }
                             }}
 
@@ -120,21 +125,26 @@ export const MessageForm = ({ projectId }: Props) => {
 
                     </div>
                     <Button
-                    disabled ={isButtonDisabled}
-                     className={cn(
-                        "size-8 rounded-full",
-                        isButtonDisabled && "bg-muted-foreground border"
-                    )}>
+                        disabled={isButtonDisabled}
+                        className={cn(
+                            "size-8 rounded-full",
+                            isButtonDisabled && "bg-muted-foreground border"
+                        )}>
                         {isPending ? (
                             <Loader2Icon className="size-4 animate-spin"></Loader2Icon>
-                        ): (
+                        ) : (
                             <ArrowUpIcon></ArrowUpIcon>
                         )}
-                        
+
                     </Button>
 
                 </div>
             </form>
+            <OutOfCreditsModal
+                open={showOutOfCredits}
+                onClose={() => setShowOutOfCredits(false)}
+            />
+
         </Form>
     )
 }
