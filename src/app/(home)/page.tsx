@@ -19,7 +19,7 @@ const Page = () => {
           Build something with Kiddo
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground text-center">
-          Create apps and website by a single prompt
+          Create apps and website with a single prompt
         </p>
         <div className="max-w-3xl mx-auto w-full">
           <ProjectForm/>
