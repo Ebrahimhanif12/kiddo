@@ -1,5 +1,5 @@
 import Image from "next/image";
-import{useState} from "react";
+import{useEffect, useState} from "react";
 
 const ShimmerMessage = () => {
     const message = [
@@ -13,13 +13,13 @@ const ShimmerMessage = () => {
         "Almost Ready...",
     ]
 
-    const [currentMessageIndex] = useState(0);
+    const [currentMessageIndex,setCurrentMessageIndex] = useState(0);
 
-    // useEffect(() => {
-    //     const interval = setInterval(() =>{
-    //         setCurrentMessageIndex((prev) => (prev+1) % message.length);
-    //     },2000)
-    // }, [message.length]);
+    useEffect(() => {
+        const interval = setInterval(() =>{
+            setCurrentMessageIndex((prev) => (prev+1) % message.length);
+        },2000)
+    }, [message.length]);
 
     return (
         <div className="flex items-center gap-2">
