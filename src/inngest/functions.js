@@ -59,46 +59,65 @@ export const codeAgentFunction = inngest.createFunction(
 
     // ---------------- TOOLS ----------------
 
-const terminalTool = createTool({
-  name: "terminal",
-  description: "Use terminal",
-  handler: async ({ command }, { step }) => {
-    return await step.run("terminal", async () => {
-      const sandbox = await getSandbox(sandboxId);
-      const result = await sandbox.commands.run(command);
-      return result.stdout;
+    // ---------------- TOOLS ----------------
+
+    const terminalTool = createTool({
+      name: "terminal",
+      description: "Use terminal",
+      handler: async ({ command }, { step }) => {
+        return await step.run("terminal", async () => {
+          const sandbox = await getSandbox(sandboxId);
+          const result = await sandbox.commands.run(command);
+          return result.stdout;
+        });
+      },
     });
-  }
-});
 
-const fileWriterTool = createTool({
-  name: "createOrUpdateFile",
-  description: "Write file",
-  handler: async ({ files }, { step, network }) => {
-    const sandbox = await getSandbox(sandboxId);
+    const fileWriterTool = createTool({
+      name: "createOrUpdateFile",
+      description: "Write file",
+      handler: async (args, { network }) => {
+        const sandbox = await getSandbox(sandboxId);
 
-    for (const file of files || []) {
-      await sandbox.files.write(file.path, file.content);
-      network.state.data.files[file.path] = file.content;
-    }
-  }
-});
+        // ✅ SUPPORT BOTH SINGLE FILE & ARRAY
+        const files = Array.isArray(args.files)
+          ? args.files
+          : args.path && args.content
+            ? [{ path: args.path, content: args.content }]
+            : [];
 
-const readFileTool = createTool({
-  name: "readFile",
-  description: "Read file",
-  handler: async ({ files }, { step }) => {
-    const sandbox = await getSandbox(sandboxId);
-    const contents = [];
+        for (const file of files) {
+          await sandbox.files.write(file.path, file.content);
+          network.state.data.files[file.path] = file.content;
+        }
 
-    for (const file of files || []) {
-      const content = await sandbox.files.read(file);
-      contents.push({ path: file, content });
-    }
+        return { success: true };
+      },
+    });
 
-    return JSON.stringify(contents);
-  }
-});
+    const readFileTool = createTool({
+      name: "readFile",
+      description: "Read file",
+      handler: async (args) => {
+        const sandbox = await getSandbox(sandboxId);
+
+        const files = Array.isArray(args.files)
+          ? args.files
+          : args.path
+            ? [args.path]
+            : [];
+
+        const contents = [];
+
+        for (const filePath of files) {
+          const content = await sandbox.files.read(filePath);
+          contents.push({ path: filePath, content });
+        }
+
+        return JSON.stringify(contents);
+      },
+    });
+
 
 
 
